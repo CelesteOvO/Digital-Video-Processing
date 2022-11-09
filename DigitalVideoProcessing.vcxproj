@@ -20,6 +20,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="KeyFrameExtraction.cpp" />
+    <ClCompile Include="ThresholdSegmentation.cpp" />
+    <ClCompile Include="MomentInvariant.cpp" />
+    <ClCompile Include="WaterShed.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

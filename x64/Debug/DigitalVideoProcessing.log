@@ -1,2 +1,6 @@
 ﻿  KeyFrameExtraction.cpp
-  DigitalVideoProcessing.vcxproj -> E:\Projects\DigitalVideoProcessing\x64\Debug\DigitalVideoProcessing.exe
+  ThresholdSegmentation.cpp
+  MomentInvariant.cpp
+  WaterShed.cpp
+  正在生成代码...
+  DigitalVideoProcessing.vcxproj -> E:\Projects\Digital-Video-Processing\x64\Debug\DigitalVideoProcessing.exe

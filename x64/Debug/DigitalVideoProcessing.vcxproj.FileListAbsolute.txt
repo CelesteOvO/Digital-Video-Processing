@@ -1,1 +1,2 @@
 E:\Projects\DigitalVideoProcessing\x64\Debug\DigitalVideoProcessing.exe
+E:\Projects\Digital-Video-Processing\x64\Debug\DigitalVideoProcessing.exe

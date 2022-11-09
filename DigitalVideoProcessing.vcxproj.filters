@@ -18,5 +18,14 @@
     <ClCompile Include="KeyFrameExtraction.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="WaterShed.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="MomentInvariant.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ThresholdSegmentation.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
