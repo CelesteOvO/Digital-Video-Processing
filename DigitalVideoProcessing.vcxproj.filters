@@ -27,5 +27,11 @@
     <ClCompile Include="ThresholdSegmentation.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="ModifyContrastAndBrightness.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="VideoPlayer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

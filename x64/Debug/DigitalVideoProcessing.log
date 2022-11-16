@@ -1,14 +1,4 @@
-﻿  KeyFrameExtraction.cpp
-E:\Projects\Digital-Video-Processing\KeyFrameExtraction.cpp(125,9): warning C4244: “初始化”: 从“__int64”转换到“int”，可能丢失数据
-E:\Projects\Digital-Video-Processing\KeyFrameExtraction.cpp(126,9): warning C4244: “初始化”: 从“__int64”转换到“int”，可能丢失数据
-E:\Projects\Digital-Video-Processing\KeyFrameExtraction.cpp(127,9): warning C4244: “初始化”: 从“__int64”转换到“int”，可能丢失数据
-E:\Projects\Digital-Video-Processing\KeyFrameExtraction.cpp(134,8): warning C4244: “初始化”: 从“double”转换到“int”，可能丢失数据
-E:\Projects\Digital-Video-Processing\KeyFrameExtraction.cpp(137,8): warning C4244: “初始化”: 从“double”转换到“int”，可能丢失数据
-E:\Projects\Digital-Video-Processing\KeyFrameExtraction.cpp(138,16): warning C4244: “=”: 从“int”转换到“float”，可能丢失数据
-E:\Projects\Digital-Video-Processing\KeyFrameExtraction.cpp(97,6): warning C4101: “m_0”: 未引用的局部变量
-E:\Projects\Digital-Video-Processing\KeyFrameExtraction.cpp(97,16): warning C4101: “m_2”: 未引用的局部变量
-E:\Projects\Digital-Video-Processing\KeyFrameExtraction.cpp(97,21): warning C4101: “m_3”: 未引用的局部变量
-E:\Projects\Digital-Video-Processing\KeyFrameExtraction.cpp(97,11): warning C4101: “m_1”: 未引用的局部变量
-E:\Projects\Digital-Video-Processing\KeyFrameExtraction.cpp(95,10): warning C4101: “z1”: 未引用的局部变量
-E:\Projects\Digital-Video-Processing\KeyFrameExtraction.cpp(95,6): warning C4101: “z0”: 未引用的局部变量
+﻿  VideoPlayer.cpp
+E:\Projects\Digital-Video-Processing\VideoPlayer.cpp(46,18): warning C4244: “初始化”: 从“double”转换到“int”，可能丢失数据
+E:\Projects\Digital-Video-Processing\VideoPlayer.cpp(73,18): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
   DigitalVideoProcessing.vcxproj -> E:\Projects\Digital-Video-Processing\x64\Debug\DigitalVideoProcessing.exe
