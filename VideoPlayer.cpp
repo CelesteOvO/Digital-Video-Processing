@@ -18,6 +18,9 @@ int g_gaussianFiltering = false; // 是否进行高斯滤波
 int g_lowPassFiltering = false; // 是否进行低通滤波
 int g_highPassFiltering = false; // 是否进行高通滤波
 int g_medianFiltering = false; // 是否进行中值滤波
+int g_btws_low = false;
+int g_btws_high = false;
+
 
 Mat g_srcImage;
 
@@ -108,7 +111,12 @@ void on_BoxFiltering(int, void*) {
 	if (g_boxFiltering == 0)
 		return;
 	Mat result;
-	boxFilter(g_srcImage, result, -1, Size(3, 3), Point(-1, -1), true);
+	if (g_boxFiltering == 1)
+		boxFilter(g_srcImage, result, -1, Size(3, 3), Point(-1, -1), true);
+	else if(g_boxFiltering == 2)
+		boxFilter(g_srcImage, result, -1, Size(5, 5), Point(-1, -1), true);
+	else if (g_boxFiltering == 3)
+		boxFilter(g_srcImage, result, -1, Size(9, 9), Point(-1, -1), true);
 	g_srcImage = result;
 }
 
@@ -116,8 +124,12 @@ void on_averageFiltering(int, void*) {
 	if (g_averageFiltering == 0)
 		return;
 	Mat result;
-	blur(g_srcImage, result, Size(3, 3), Point(-1, -1)); // 3x3卷积核
-	//blur(g_srcImage, result, Size(9, 9), Point(-1, -1)); // 9x9卷积核
+	if(g_averageFiltering == 1)
+		blur(g_srcImage, result, Size(3, 3), Point(-1, -1)); // 3x3卷积核
+	else if(g_averageFiltering == 2)
+	    blur(g_srcImage, result, Size(5, 5), Point(-1, -1)); // 5x5卷积核
+	else if (g_averageFiltering == 3)
+		blur(g_srcImage, result, Size(9, 9), Point(-1, -1)); // 9x9卷积核
 	g_srcImage = result;
 }
 
@@ -268,6 +280,7 @@ Mat ideal_high_pass_filter(Mat& src, float sigma)
 	Mat result = frequency_filter(padded, ideal_kernel);
 	return result;
 }
+
 void on_highPassFiltering(int, void*)
 {
 	if (g_highPassFiltering == 0)
@@ -285,6 +298,71 @@ void on_medianFiltering(int, void*)
 	Mat result;
 	medianBlur(g_srcImage, result, 3); // 3x3卷积核
 	g_srcImage = result;
+}
+
+cv::Mat butterworth_low_kernel(cv::Mat& scr, float sigma, int n)
+{
+	cv::Mat butterworth_low_pass(scr.size(), CV_32FC1); //，CV_32FC1
+	float D0 = sigma;//半径D0越小，模糊越大；半径D0越大，模糊越小
+	for (int i = 0; i < scr.rows; i++) {
+		for (int j = 0; j < scr.cols; j++) {
+			float d = sqrt(pow(float(i - scr.rows / 2), 2) + pow(float(j - scr.cols / 2), 2));//分子,计算pow必须为float型
+			butterworth_low_pass.at<float>(i, j) = 1.0f / (1.0f + pow(d / D0, 2 * n));
+		}
+	}
+	return butterworth_low_pass;
+}
+
+cv::Mat butterworth_low_pass_filter(cv::Mat& src, float d0, int n)
+{
+	// H = 1 / (1+(D/D0)^2n)   n表示巴特沃斯滤波器的次数
+	// 阶数n=1 无振铃和负值    阶数n=2 轻微振铃和负值  阶数n=5 明显振铃和负值   阶数n=20 与ILPF相似
+	cv::Mat padded = image_make_border(src);
+	cv::Mat butterworth_kernel = butterworth_low_kernel(padded, d0, n);
+	cv::Mat result = frequency_filter(padded, butterworth_kernel);
+	return result;
+}
+
+void on_btwsLowFiltering(int, void*)
+{
+	if (g_btws_low == 0)
+		return;
+	Mat result, gray;
+	cvtColor(g_srcImage, gray, CV_RGB2GRAY);
+	result = butterworth_low_pass_filter(gray, 50.0f,2);
+	g_srcImage = result / 255;
+}
+
+cv::Mat butterworth_high_kernel(cv::Mat& scr, float sigma, int n)
+{
+	cv::Mat butterworth_high_pass(scr.size(), CV_32FC1); //，CV_32FC1
+	float D0 = (float)sigma;  // 半径D0越小，模糊越大；半径D0越大，模糊越小
+	for (int i = 0; i < scr.rows; i++) {
+		for (int j = 0; j < scr.cols; j++) {
+			float d = sqrt(pow(float(i - scr.rows / 2), 2) + pow(float(j - scr.cols / 2), 2));//分子,计算pow必须为float型
+			butterworth_high_pass.at<float>(i, j) = 1.0f - 1.0f / (1.0f + pow(d / D0, 2 * n));
+		}
+	}
+	return butterworth_high_pass;
+}
+
+// 巴特沃斯高通滤波
+cv::Mat butterworth_high_pass_filter(cv::Mat& src, float d0, int n)
+{
+	cv::Mat padded = image_make_border(src);
+	cv::Mat butterworth_kernel = butterworth_high_kernel(padded, d0, n);
+	cv::Mat result = frequency_filter(padded, butterworth_kernel);
+	return result;
+}
+
+void on_btwsHighFiltering(int, void*)
+{
+	if (g_btws_high == 0)
+		return;
+	Mat result, gray;
+	cvtColor(g_srcImage, gray, CV_RGB2GRAY);
+	result = butterworth_high_pass_filter(gray, 5.0f, 2);
+	g_srcImage = result / 255;
 }
 
 int main()
@@ -359,11 +437,11 @@ int main()
 		
 		//视频增强
 		//方框滤波
-		createTrackbar("方框滤波", "视频播放器", &g_boxFiltering, 1, on_BoxFiltering);
+		createTrackbar("方框滤波", "视频播放器", &g_boxFiltering, 3, on_BoxFiltering);
 		on_BoxFiltering(g_boxFiltering, 0);
 		
 		//均值滤波
-		createTrackbar("均值滤波", "视频播放器", &g_averageFiltering, 1, on_averageFiltering);
+		createTrackbar("均值滤波", "视频播放器", &g_averageFiltering, 3, on_averageFiltering);
 		on_averageFiltering(g_averageFiltering, 0);
 
 		//高斯滤波
@@ -381,6 +459,14 @@ int main()
 		//理想高通滤波
 		createTrackbar("理想高通滤波", "视频播放器", &g_highPassFiltering, 1, on_highPassFiltering);
 		on_highPassFiltering(g_highPassFiltering, 0);
+
+		//巴特沃斯低通滤波
+		createTrackbar("巴特沃斯低通滤波", "视频播放器", &g_btws_low, 1, on_btwsLowFiltering);
+		on_btwsLowFiltering(g_btws_low, 0);
+
+		//巴特沃斯高通滤波
+		createTrackbar("巴特沃斯高通滤波", "视频播放器", &g_btws_high, 1, on_btwsHighFiltering);
+		on_btwsHighFiltering(g_btws_high, 0);
 		
 		frame = g_srcImage;
 		imshow("视频播放器", frame);

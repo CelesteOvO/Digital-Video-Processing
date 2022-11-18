@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="btws.cpp" />
     <ClCompile Include="Filter.cpp" />
     <ClCompile Include="KeyFrameExtraction.cpp" />
     <ClCompile Include="ModifyContrastAndBrightness.cpp" />
